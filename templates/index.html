@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot Temático</title>
+    <style>
+        html{
+
+        }
+        body { 
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('/static/background.png');  }
+        #chatbox { 
+            width: 100%; 
+            max-width: 500px; 
+            margin: auto; 
+            background-color: antiquewhite;
+            opacity: 0.9;
+            border-radius: 10px;
+            padding: 10px;
+            min-height: 400px;}
+        #messages { height: 400px; 
+            overflow-y: auto;
+            scrollbar-color:  #888 #f1f1f1;
+            scrollbar-width: thin;  
+            padding: 10px; }
+        #logo { text-align: center; 
+            width: 100%; 
+            max-width: 200px; 
+            margin: 5px auto; 
+            display: block; }
+        #input { 
+            width: 80%; 
+            padding: 10px; 
+            border: 1px solid #ccc; 
+            border-radius: 5px; }
+        button { 
+            padding: 10px; 
+            background-color: #4CAF50; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; width: 14.7%; }
+        button:hover { 
+            background-color: #45a049; }
+        .message { 
+            margin: 10px 0; }
+        .user { 
+            text-align: right;
+            justify-self: end;
+            background-color: paleturquoise;
+            padding: 10px;
+            border-radius: 20px;
+            max-width: 80%;
+         }
+        .bot{ 
+        text-align: left; 
+        background-color: palegreen;
+        padding: 10px;
+        border-radius: 20px;
+        width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <img id="logo" src='/static/logo.png'>
+    <div id="chatbox">
+        
+        <div id="messages"></div>
+        <input type="text" id="input" placeholder="Digite sua mensagem..." />
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("input");
+            const msg = input.value;
+            if (!msg) return;
+
+            addMessage(msg, "user");
+            input.value = "";
+
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ message: msg })
+            });
+
+            const data = await response.json();
+            addMessage(data.response, "bot");
+        }
+        
+        function addMessage(text, sender) {
+            const div = document.createElement("div");
+            div.className = `message ${sender}`;
+            div.innerText = text;
+            document.getElementById("messages").appendChild(div);
+            const messages = document.getElementById("messages");
+            messages.scrollTo({ top: messages.scrollHeight, behavior: 'smooth' });
+            
+        }
+    </script>
+</body>
+</html>
