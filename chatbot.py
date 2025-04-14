@@ -29,7 +29,9 @@ def responder(mensagem):
     # Lista de respostas que **não** devem gerar follow-up
     respostas_sem_follow_up = [
         "Olá, Pronto pra explorar o mundo de Terraria?",
-        "Boa sorte nas suas aventuras! Que a Espada de Terra esteja com você."
+        "Boa sorte nas suas aventuras!",
+        "Legal! E o que mais você quer saber sobre Terraria?",
+
     ]
 
     # Se for uma dessas, retorna direto
@@ -38,10 +40,7 @@ def responder(mensagem):
 
     # Caso contrário, adiciona uma pergunta extra
     follow_ups = [
-        "O que mais você gostaria de saber?",
-        "Tem mais alguma dúvida?",
-        "Quer falar sobre outro assunto?",
-        "Posso te ajudar com mais alguma coisa?"
+        " O que mais você gostaria de saber?",
     ]
 
     return resposta + " " + random.choice(follow_ups)
